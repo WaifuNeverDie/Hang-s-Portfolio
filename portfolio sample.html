@@ -20,12 +20,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#14110F; --bg-soft:#1C1916; --text:#EDE8E0; --muted:#9B9388;
-    --accent:#C9A35B; --line:rgba(237,232,224,.10); --card:#1A1714;
+    /* Palette: #A8E8F9 #00537A #013C58 #F5A201 #FFBA42 #FFD35B */
+    --bg:#013C58; --bg-soft:#00537A; --text:#E8F7FD; --muted:#A8E8F9;
+    --accent:#FFBA42; --line:rgba(168,232,249,.15); --card:#024668;
   }
   [data-theme="light"]{
-    --bg:#F5F1E9; --bg-soft:#ECE6DA; --text:#1C1916; --muted:#6B6258;
-    --accent:#9C7A2E; --line:rgba(28,25,22,.12); --card:#FBF8F2;
+    --bg:#A8E8F9; --bg-soft:#C4F0FB; --text:#013C58; --muted:#00537A;
+    --accent:#F5A201; --line:rgba(1,60,88,.15); --card:#DFF6FD;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -66,7 +67,7 @@
   .hero-cta{margin-top:44px;display:flex;gap:18px;flex-wrap:wrap}
   .btn{padding:14px 30px;border-radius:40px;font-size:.92rem;font-weight:400;
     transition:.3s;display:inline-block}
-  .btn-fill{background:var(--accent);color:#14110F}
+  .btn-fill{background:var(--accent);color:#013C58}
   .btn-fill:hover{transform:translateY(-2px);box-shadow:0 10px 30px color-mix(in srgb,var(--accent) 40%,transparent)}
   .btn-line{border:1px solid var(--line)}
   .btn-line:hover{border-color:var(--accent);color:var(--accent)}
@@ -88,19 +89,43 @@
   .edu-block ul{color:var(--muted);font-size:.9rem;padding-left:18px}
   .edu-block ul li{margin-bottom:6px}
 
-  /* EXPERIENCE */
-  .timeline{position:relative;padding-left:30px}
+  /* EXPERIENCE — game-menu style timeline */
+  .timeline{position:relative;padding-left:42px}
+  /* faint full track */
   .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;
-    width:1px;background:var(--line)}
-  .exp{position:relative;padding-bottom:48px}
-  .exp::before{content:"";position:absolute;left:-30px;top:6px;width:13px;height:13px;
-    border-radius:50%;background:var(--accent)}
+    width:2px;background:var(--line)}
+  /* glowing progress line that draws as you scroll */
+  .timeline-progress{position:absolute;left:6px;top:6px;width:2px;height:0;
+    background:linear-gradient(to bottom,#FFD35B,var(--accent));
+    box-shadow:0 0 12px var(--accent);transition:height .15s linear}
+  .exp{position:relative;padding:18px 22px 30px;margin-bottom:18px;border-radius:10px;
+    border:1px solid transparent;
+    opacity:.35;transform:translateX(0) scale(.985);
+    transition:opacity .45s ease,transform .45s ease,border-color .45s ease,background .45s ease}
+  .exp::before{content:"";position:absolute;left:-42px;top:24px;width:13px;height:13px;
+    border-radius:50%;background:var(--bg-soft);border:2px solid var(--line);
+    transition:.45s}
+  /* selection cursor — like a game menu pointer */
+  .exp::after{content:"▸";position:absolute;left:-2px;top:18px;color:var(--accent);
+    font-size:1.1rem;opacity:0;transform:translateX(-10px);transition:.45s}
+  .exp.active{opacity:1;transform:translateX(10px) scale(1);
+    background:var(--card);border-color:color-mix(in srgb,var(--accent) 45%,transparent);
+    box-shadow:0 8px 32px rgba(0,0,0,.25)}
+  .exp.active::before{background:var(--accent);border-color:#FFD35B;
+    box-shadow:0 0 14px var(--accent)}
+  .exp.active::after{opacity:1;transform:translateX(0)}
+  /* entries already passed stay readable but calm */
+  .exp.passed{opacity:.7}
+  .exp.passed::before{background:var(--accent);border-color:transparent}
   .exp .yr{font-size:.78rem;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}
   .exp h3{font-size:1.35rem;margin:8px 0 4px}
   .exp .role{color:var(--text);font-size:.95rem;margin-bottom:10px}
   .exp p{color:var(--muted);font-size:.9rem;max-width:560px}
   .exp ul{color:var(--muted);font-size:.9rem;padding-left:18px;max-width:560px}
   .exp ul li{margin-bottom:6px}
+  @media (prefers-reduced-motion: reduce){
+    .exp,.exp::before,.exp::after,.timeline-progress{transition:none}
+  }
 
   /* OTHERS — card grid reused */
   .sec-head{margin-bottom:60px}
@@ -229,7 +254,8 @@
       <p class="eyebrow">Experience</p>
       <h2>Brands I've worked with.</h2>
     </div>
-    <div class="timeline">
+    <div class="timeline" id="timeline">
+      <div class="timeline-progress" id="timelineProgress"></div>
 
       <div class="exp reveal">
         <!-- TODO: fill in exact dates, role title, and bullet points for this role -->
@@ -372,6 +398,44 @@
   document.getElementById('burger').onclick=()=>{
     document.getElementById('about').scrollIntoView();
   };
+
+  // EXPERIENCE — game-menu timeline:
+  // the glowing line draws as you scroll, and the entry closest to the
+  // middle of the screen becomes the "selected" item (works both directions)
+  const tl=document.getElementById('timeline');
+  const progress=document.getElementById('timelineProgress');
+  const exps=[...tl.querySelectorAll('.exp')];
+  // these have their own scroll animation — opt out of the generic fade-in
+  exps.forEach(el=>el.classList.remove('reveal'));
+  function updateTimeline(){
+    const rect=tl.getBoundingClientRect();
+    const focusY=window.innerHeight*0.45; // selection point on screen
+
+    // draw the progress line up to the focus point
+    const drawn=Math.min(Math.max(focusY-rect.top,0),rect.height-12);
+    progress.style.height=drawn+'px';
+
+    // pick the entry whose center is nearest the focus point
+    let best=null,bestDist=Infinity;
+    exps.forEach(el=>{
+      const r=el.getBoundingClientRect();
+      const center=r.top+r.height/2;
+      const dist=Math.abs(center-focusY);
+      if(dist<bestDist){bestDist=dist;best=el}
+    });
+    exps.forEach(el=>{
+      el.classList.remove('active','passed');
+      const r=el.getBoundingClientRect();
+      if(el===best && r.top<window.innerHeight && r.bottom>0){
+        el.classList.add('active');
+      }else if(r.top+r.height/2<focusY){
+        el.classList.add('passed');
+      }
+    });
+  }
+  window.addEventListener('scroll',updateTimeline,{passive:true});
+  window.addEventListener('resize',updateTimeline);
+  updateTimeline();
 </script>
 </body>
 </html>
