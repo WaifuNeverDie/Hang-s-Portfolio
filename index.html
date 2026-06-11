@@ -3,15 +3,9 @@
   ============================================================
   PORTFOLIO — PHAM THI HANG
   ============================================================
-  Project structure:
-  - index.html     : structure & content (this file)
-  - css/style.css  : all styles + theme colors
-  - js/main.js     : theme toggle, fade-ins, experience wheel
-  - images/        : put all photos here (e.g. images/portrait.jpg)
-
   TODO items remaining:
   - Search "TODO:" to find all placeholders still needing real data
-  - Search "ẢNH:" to find image slots (use paths like images/your-photo.jpg)
+  - Search "ẢNH:" to find image slots (replace with your actual image paths)
   - Search "LINK:" to find social/URL placeholders
   ============================================================
 -->
@@ -24,7 +18,171 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<style>
+  :root{
+    /* Palette: #A8E8F9 #00537A #013C58 #F5A201 #FFBA42 #FFD35B */
+    --bg:#013C58; --bg-soft:#00537A; --text:#E8F7FD; --muted:#A8E8F9;
+    --accent:#FFBA42; --line:rgba(168,232,249,.15); --card:#024668;
+  }
+  [data-theme="light"]{
+    --bg:#A8E8F9; --bg-soft:#C4F0FB; --text:#013C58; --muted:#00537A;
+    --accent:#F5A201; --line:rgba(1,60,88,.15); --card:#DFF6FD;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',sans-serif;
+    line-height:1.6;font-weight:300;transition:background .4s,color .4s;overflow-x:hidden}
+  h1,h2,h3{font-family:'Playfair Display',serif;font-weight:500;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  section{padding:120px 0;border-top:1px solid var(--line)}
+  .eyebrow{font-size:.75rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:18px;font-weight:500}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);
+    background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:1080px;margin:0 auto;padding:16px 28px;display:flex;
+    align-items:center;justify-content:space-between}
+  .logo{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600}
+  .logo span{color:var(--accent)}
+  .nav-links{display:flex;gap:32px;font-size:.9rem}
+  .nav-links a{color:var(--muted);transition:color .25s}
+  .nav-links a:hover{color:var(--text)}
+  .theme-btn{background:none;border:1px solid var(--line);color:var(--text);
+    width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1rem;transition:.25s}
+  .theme-btn:hover{border-color:var(--accent)}
+  .burger{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer}
+
+  /* HERO */
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding-top:90px;position:relative}
+  .hero-glow{position:absolute;top:20%;right:-10%;width:480px;height:480px;
+    background:radial-gradient(circle,var(--accent),transparent 65%);opacity:.14;
+    filter:blur(40px);pointer-events:none}
+  .hero h1{font-size:clamp(2.8rem,8vw,6rem);letter-spacing:-.02em}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero .tagline{font-size:clamp(1.05rem,2.5vw,1.5rem);color:var(--muted);
+    margin-top:24px;max-width:560px}
+  .hero-cta{margin-top:44px;display:flex;gap:18px;flex-wrap:wrap}
+  .btn{padding:14px 30px;border-radius:40px;font-size:.92rem;font-weight:400;
+    transition:.3s;display:inline-block}
+  .btn-fill{background:var(--accent);color:#013C58}
+  .btn-fill:hover{transform:translateY(-2px);box-shadow:0 10px 30px color-mix(in srgb,var(--accent) 40%,transparent)}
+  .btn-line{border:1px solid var(--line)}
+  .btn-line:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:center}
+  .about-img{aspect-ratio:4/5;background:var(--bg-soft);border:1px solid var(--line);
+    border-radius:8px;display:flex;align-items:center;justify-content:center;
+    color:var(--muted);font-size:.85rem;text-align:center;padding:20px;overflow:hidden}
+  .about-img img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+  .about-text h2{font-size:clamp(2rem,4vw,2.8rem);margin-bottom:24px}
+  .about-text p{color:var(--muted);margin-bottom:18px;max-width:520px}
+
+  /* EDUCATION */
+  .edu-block{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:36px;margin-bottom:24px}
+  .edu-block h3{font-size:1.4rem;margin-bottom:6px}
+  .edu-meta{color:var(--accent);font-size:.85rem;letter-spacing:.05em;margin-bottom:14px}
+  .edu-block p{color:var(--muted);font-size:.92rem;margin-bottom:10px}
+  .edu-block ul{color:var(--muted);font-size:.9rem;padding-left:18px}
+  .edu-block ul li{margin-bottom:6px}
+
+  /* EXPERIENCE — wheel-picker selection (game style)
+     The section pins to the screen; scrolling rotates the entries through
+     a vertical wheel. Selected entry lights up in the middle, neighbours
+     shrink and fade above/below it. */
+  #experience{padding:0;height:240vh} /* scroll distance = animation length */
+  .exp-sticky{position:sticky;top:0;min-height:100vh;display:flex;
+    flex-direction:column;justify-content:center;overflow:hidden}
+  .exp-sticky .sec-head{margin-bottom:36px}
+  .wheel{position:relative;height:440px}
+  .exp{position:absolute;left:64px;right:0;top:50%;padding:24px 28px;
+    border-radius:12px;background:var(--card);border:1px solid var(--line);
+    transform:translateY(-50%);opacity:0;visibility:hidden;
+    will-change:transform,opacity;
+    transition:border-color .35s ease,box-shadow .35s ease}
+  .exp.lit{border-color:color-mix(in srgb,var(--accent) 55%,transparent);
+    box-shadow:0 0 30px color-mix(in srgb,var(--accent) 25%,transparent)}
+  /* circle selection bar on the left */
+  .wheel-dots{position:absolute;left:14px;top:50%;transform:translateY(-50%);
+    display:flex;flex-direction:column;gap:16px;z-index:200}
+  .wheel-dots .dot{width:10px;height:10px;border-radius:50%;
+    background:var(--line);transition:.35s}
+  .wheel-dots .dot.on{background:var(--accent);transform:scale(1.55);
+    box-shadow:0 0 12px var(--accent)}
+  /* hover preview — small picture window on the selected entry */
+  .exp-preview{position:absolute;right:24px;bottom:calc(100% - 8px);z-index:300;
+    display:flex;gap:10px;padding:12px;border-radius:10px;
+    background:var(--bg-soft);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+    box-shadow:0 14px 40px rgba(0,0,0,.35);
+    opacity:0;visibility:hidden;transform:translateY(10px) scale(.96);
+    transition:opacity .3s ease,transform .3s ease,visibility .3s;pointer-events:none}
+  .exp-preview::after{content:"";position:absolute;bottom:-7px;right:40px;
+    width:12px;height:12px;background:var(--bg-soft);transform:rotate(45deg);
+    border-right:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+    border-bottom:1px solid color-mix(in srgb,var(--accent) 45%,transparent)}
+  .exp-preview .pv{width:130px;height:86px;border-radius:6px;overflow:hidden;
+    background:var(--card);border:1px solid var(--line);display:flex;
+    align-items:center;justify-content:center;color:var(--muted);
+    font-size:.68rem;text-align:center;padding:6px}
+  .exp-preview .pv img{width:100%;height:100%;object-fit:cover}
+  /* only the lit (selected) entry shows its preview on hover */
+  .exp.lit:hover .exp-preview{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+  .exp .yr{font-size:.78rem;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}
+  .exp h3{font-size:1.35rem;margin:8px 0 4px}
+  .exp .role{color:var(--text);font-size:.95rem;margin-bottom:10px}
+  .exp p{color:var(--muted);font-size:.9rem;max-width:560px}
+  .exp ul{color:var(--muted);font-size:.9rem;padding-left:18px;max-width:560px}
+  .exp ul li{margin-bottom:6px}
+  @media (prefers-reduced-motion: reduce){
+    .exp,.wheel-dots .dot{transition:none}
+  }
+
+  /* OTHERS — card grid reused */
+  .sec-head{margin-bottom:60px}
+  .sec-head h2{font-size:clamp(2rem,4vw,3rem)}
+  .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:36px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+    overflow:hidden;transition:.4s;cursor:pointer}
+  .card:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+  .card-img{aspect-ratio:16/10;background:var(--bg-soft);display:flex;
+    align-items:center;justify-content:center;color:var(--muted);font-size:.8rem;
+    text-align:center;padding:16px;overflow:hidden}
+  .card-img img{width:100%;height:100%;object-fit:cover;transition:.5s}
+  .card:hover .card-img img{transform:scale(1.05)}
+  .card-body{padding:26px}
+  .card-body h3{font-size:1.4rem;margin-bottom:10px}
+  .card-body p{color:var(--muted);font-size:.92rem;margin-bottom:18px}
+  .card-link{color:var(--accent);font-size:.85rem;letter-spacing:.05em}
+  .card-link::after{content:" →";transition:.3s}
+  .card:hover .card-link::after{margin-left:6px}
+
+  /* CONTACT */
+  .contact{text-align:center}
+  .contact h2{font-size:clamp(2.2rem,6vw,4rem);margin-bottom:24px}
+  .contact h2 em{font-style:italic;color:var(--accent)}
+  .contact p{color:var(--muted);max-width:480px;margin:0 auto 36px}
+  .socials{display:flex;gap:28px;justify-content:center;margin-top:40px;flex-wrap:wrap}
+  .socials a{color:var(--muted);font-size:.9rem;letter-spacing:.05em;transition:.25s}
+  .socials a:hover{color:var(--accent)}
+  footer{padding:40px 0;text-align:center;color:var(--muted);font-size:.8rem;
+    border-top:1px solid var(--line)}
+
+  /* FADE-IN ON SCROLL */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* RESPONSIVE */
+  @media(max-width:820px){
+    .about-grid{grid-template-columns:1fr;gap:36px}
+    .proj-grid{grid-template-columns:1fr}
+    .nav-links{display:none}
+    .burger{display:block}
+    section{padding:80px 0}
+  }
+</style>
 </head>
 <body>
 
@@ -62,7 +220,7 @@
 <section id="about">
   <div class="wrap about-grid">
     <!-- ẢNH: portrait photo, ratio ~4:5 (e.g. 800×1000px).
-         TODO: replace the div below with <img src="images/portrait.jpg" alt="Phạm Thị Hằng"> -->
+         TODO: replace the div below with <img src="your-photo.jpg" alt="Phạm Thị Hằng"> -->
     <div class="about-img reveal">
       <span>TODO: Add your portrait photo here<br><br>Recommended size: 800 × 1000 px</span>
     </div>
@@ -117,7 +275,7 @@
         <span class="yr">TODO: Month Year — Month Year</span>
         <h3>Hung Hoa Beer &amp; Cinema</h3>
         <div class="role">TODO: Role title — e.g. Content Marketing Executive</div>
-        <!-- ẢNH: hover preview — replace placeholders with <img src="images/..."> (~390×260px each) -->
+        <!-- ẢNH: hover preview — replace placeholders with <img src="..."> (~390×260px each) -->
         <div class="exp-preview">
           <div class="pv">TODO: ảnh 1<br>Hung Hoa</div>
           <div class="pv">TODO: ảnh 2<br>Hung Hoa</div>
@@ -135,7 +293,7 @@
         <span class="yr">TODO: Month Year — Month Year</span>
         <h3>Digimind Group</h3>
         <div class="role">TODO: Role title — e.g. Social Media Intern</div>
-        <!-- ẢNH: hover preview — replace placeholders with <img src="images/..."> (~390×260px each) -->
+        <!-- ẢNH: hover preview — replace placeholders with <img src="..."> (~390×260px each) -->
         <div class="exp-preview">
           <div class="pv">TODO: ảnh 1<br>Digimind</div>
           <div class="pv">TODO: ảnh 2<br>Digimind</div>
@@ -152,7 +310,7 @@
         <span class="yr">TODO: Month Year — Month Year</span>
         <h3>Carlsberg Vietnam</h3>
         <div class="role">TODO: Role title — e.g. Marketing Intern</div>
-        <!-- ẢNH: hover preview — replace placeholders with <img src="images/..."> (~390×260px each) -->
+        <!-- ẢNH: hover preview — replace placeholders with <img src="..."> (~390×260px each) -->
         <div class="exp-preview">
           <div class="pv">TODO: ảnh 1<br>Carlsberg</div>
           <div class="pv">TODO: ảnh 2<br>Carlsberg</div>
@@ -169,7 +327,7 @@
         <span class="yr">TODO: Month Year — Month Year</span>
         <h3>SG Beer Central JSC</h3>
         <div class="role">TODO: Role title — e.g. Content Contributor</div>
-        <!-- ẢNH: hover preview — replace placeholders with <img src="images/..."> (~390×260px each) -->
+        <!-- ẢNH: hover preview — replace placeholders with <img src="..."> (~390×260px each) -->
         <div class="exp-preview">
           <div class="pv">TODO: ảnh 1<br>SG Beer</div>
           <div class="pv">TODO: ảnh 2<br>SG Beer</div>
@@ -195,7 +353,7 @@
     <div class="proj-grid">
 
       <article class="card reveal">
-        <!-- ẢNH: 16:10 cover image. TODO: replace placeholder with <img src="images/..."> -->
+        <!-- ẢNH: 16:10 cover image for this project. TODO: replace placeholder with <img src="..."> -->
         <div class="card-img">[TODO: Add cover image 16:10]</div>
         <div class="card-body">
           <h3>Blog Ngon Hội Hoạ</h3>
@@ -262,6 +420,71 @@
 
 <footer>© 2024 Phạm Thị Hằng. Designed with care.</footer>
 
-<script src="js/main.js"></script>
+<script>
+  const tb=document.getElementById('themeBtn');
+  tb.onclick=()=>{
+    const cur=document.documentElement.getAttribute('data-theme');
+    document.documentElement.setAttribute('data-theme',cur==='light'?'':'light');
+  };
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay=(i%4*0.08)+'s';io.observe(el);
+  });
+  document.getElementById('burger').onclick=()=>{
+    document.getElementById('about').scrollIntoView();
+  };
+
+  // EXPERIENCE — wheel picker:
+  // the section pins while you scroll through it; entries rotate through a
+  // vertical wheel. The selected one sits lit in the middle at full size,
+  // the previous shifts up + shrinks + fades, the next waits below.
+  // At the start/end you see 2 entries, in the middle 3 — automatically,
+  // since only neighbours within 1 step of the selection are visible.
+  const expSection=document.getElementById('experience');
+  const exps=[...document.querySelectorAll('#wheel .exp')];
+  const dotsBox=document.getElementById('wheelDots');
+  exps.forEach(()=>{
+    const d=document.createElement('div');d.className='dot';dotsBox.appendChild(d);
+  });
+  const dots=[...dotsBox.children];
+  const STEP=165;        // px between wheel positions
+  const FADE=0.6;        // opacity lost per step away from selection
+  const SHRINK=0.14;     // scale lost per step away from selection
+  const EASE=0.09;       // smoothing — lower = floatier, higher = snappier
+
+  // scroll picks a TARGET entry (snapped to whole steps); the wheel then
+  // glides toward it with easing, so a small scroll = one clean step
+  let wheelPos=0;
+  function targetIndex(){
+    const r=expSection.getBoundingClientRect();
+    const scrollable=r.height-window.innerHeight;
+    const p=Math.min(Math.max(-r.top/scrollable,0),1); // 0..1 through section
+    return Math.round(p*(exps.length-1));               // snap to nearest entry
+  }
+  function renderWheel(pos){
+    exps.forEach((el,i)=>{
+      const d=i-pos, ad=Math.abs(d);
+      const visible=ad<1.5;
+      el.style.visibility=visible?'visible':'hidden';
+      el.style.opacity=visible?String(Math.max(0,1-FADE*ad)):'0';
+      el.style.transform=
+        `translateY(calc(-50% + ${(d*STEP).toFixed(1)}px)) scale(${(1-SHRINK*Math.min(ad,2)).toFixed(3)})`;
+      el.style.zIndex=String(100-Math.round(ad*10));
+      el.classList.toggle('lit',ad<0.5);
+    });
+    const sel=Math.round(pos);
+    dots.forEach((dt,i)=>dt.classList.toggle('on',i===sel));
+  }
+  function tickWheel(){
+    const t=targetIndex();
+    wheelPos+=(t-wheelPos)*EASE;            // ease toward the target
+    if(Math.abs(t-wheelPos)<0.001)wheelPos=t;
+    renderWheel(wheelPos);
+    requestAnimationFrame(tickWheel);
+  }
+  requestAnimationFrame(tickWheel);
+</script>
 </body>
 </html>
