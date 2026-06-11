@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  PORTFOLIO — GHI CHÚ CHO BẠN (đọc kỹ phần này để sửa)
+  ============================================================
+  [LỰA CHỌN MÌNH ĐÃ CHỌN THAY BẠN — phần để trống trong yêu cầu]
+  - Công nghệ: HTML/CSS/JS thuần (không cần build, deploy thẳng lên
+    Vercel / GitHub Pages bằng cách upload 1 file này là chạy được).
+  - Nghề nghiệp: Sinh viên Ngoại thương — Kinh doanh quốc tế / Marketing.
+  - Số năm kinh nghiệm: 6 năm (sửa ở Hero + About).
+  - Mục tiêu: kết hợp xin việc + personal branding.
+  - Đối tượng: nhà tuyển dụng.
+  - Số project: 4 mục, dạng GRID (2 cột desktop / 1 cột mobile).
+  - Section thứ 5: chọn EXPERIENCE (kinh nghiệm làm việc) thay vì Education.
+  - Phong cách: tối giản + sang trọng (editorial/luxury).
+  - Theme: DARK MODE (có nút bật/tắt sang light ở góc phải trên).
+  - Tông màu: nền than chì #14110F + nhấn vàng đồng #C9A35B.
+  - Font: Playfair Display (serif, có dấu tiếng Việt) cho tiêu đề + Be Vietnam Pro (sans, thiết kế riêng cho tiếng Việt) cho body.
+  - Hiệu ứng: fade-in khi scroll + smooth scroll + hover.
+  - Nội dung: dùng lorem ipsum / placeholder cho phần chưa có dữ liệu.
+
+  [NHỮNG GÌ BẠN CẦN SỬA]
+  - Tìm tất cả chữ "TODO:" trong file để thấy chỗ cần điền.
+  - Hình ảnh: tất cả đang là placeholder. Tìm "ẢNH:" để biết kích thước
+    nên dùng và thay bằng đường dẫn ảnh của bạn (vd: src="anh/project1.jpg").
+  - Link mạng xã hội / liên hệ: tìm "LINK:".
+  ============================================================
+-->
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TODO: Tên của bạn — Sinh viên Ngoại thương | Business & Marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* TODO: đổi màu ở đây nếu muốn */
+    --bg:#14110F; --bg-soft:#1C1916; --text:#EDE8E0; --muted:#9B9388;
+    --accent:#C9A35B; --line:rgba(237,232,224,.10); --card:#1A1714;
+  }
+  [data-theme="light"]{
+    --bg:#F5F1E9; --bg-soft:#ECE6DA; --text:#1C1916; --muted:#6B6258;
+    --accent:#9C7A2E; --line:rgba(28,25,22,.12); --card:#FBF8F2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',sans-serif;
+    line-height:1.6;font-weight:300;transition:background .4s,color .4s;overflow-x:hidden}
+  h1,h2,h3{font-family:'Playfair Display',serif;font-weight:500;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  section{padding:120px 0;border-top:1px solid var(--line)}
+  .eyebrow{font-size:.75rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:18px;font-weight:500}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);
+    background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:1080px;margin:0 auto;padding:16px 28px;display:flex;
+    align-items:center;justify-content:space-between}
+  .logo{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600}
+  .logo span{color:var(--accent)}
+  .nav-links{display:flex;gap:32px;font-size:.9rem}
+  .nav-links a{color:var(--muted);transition:color .25s}
+  .nav-links a:hover{color:var(--text)}
+  .theme-btn{background:none;border:1px solid var(--line);color:var(--text);
+    width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1rem;transition:.25s}
+  .theme-btn:hover{border-color:var(--accent)}
+  .burger{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer}
+
+  /* HERO */
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding-top:90px;position:relative}
+  .hero-glow{position:absolute;top:20%;right:-10%;width:480px;height:480px;
+    background:radial-gradient(circle,var(--accent),transparent 65%);opacity:.14;
+    filter:blur(40px);pointer-events:none}
+  .hero h1{font-size:clamp(2.8rem,8vw,6rem);letter-spacing:-.02em}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero .tagline{font-size:clamp(1.05rem,2.5vw,1.5rem);color:var(--muted);
+    margin-top:24px;max-width:560px}
+  .hero-cta{margin-top:44px;display:flex;gap:18px;flex-wrap:wrap}
+  .btn{padding:14px 30px;border-radius:40px;font-size:.92rem;font-weight:400;
+    transition:.3s;display:inline-block}
+  .btn-fill{background:var(--accent);color:#14110F}
+  .btn-fill:hover{transform:translateY(-2px);box-shadow:0 10px 30px color-mix(in srgb,var(--accent) 40%,transparent)}
+  .btn-line{border:1px solid var(--line)}
+  .btn-line:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:center}
+  .about-img{aspect-ratio:4/5;background:var(--bg-soft);border:1px solid var(--line);
+    border-radius:8px;display:flex;align-items:center;justify-content:center;
+    color:var(--muted);font-size:.85rem;text-align:center;padding:20px;overflow:hidden}
+  .about-img img{width:100%;height:100%;object-fit:cover}
+  .about-text h2{font-size:clamp(2rem,4vw,2.8rem);margin-bottom:24px}
+  .about-text p{color:var(--muted);margin-bottom:18px;max-width:520px}
+
+  /* PROJECTS */
+  .sec-head{margin-bottom:60px}
+  .sec-head h2{font-size:clamp(2rem,4vw,3rem)}
+  .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:36px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+    overflow:hidden;transition:.4s;cursor:pointer}
+  .card:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+  .card-img{aspect-ratio:16/10;background:var(--bg-soft);display:flex;
+    align-items:center;justify-content:center;color:var(--muted);font-size:.8rem;
+    text-align:center;padding:16px;overflow:hidden}
+  .card-img img{width:100%;height:100%;object-fit:cover;transition:.5s}
+  .card:hover .card-img img{transform:scale(1.05)}
+  .card-body{padding:26px}
+  .card-body h3{font-size:1.4rem;margin-bottom:10px}
+  .card-body p{color:var(--muted);font-size:.92rem;margin-bottom:18px}
+  .card-link{color:var(--accent);font-size:.85rem;letter-spacing:.05em}
+  .card-link::after{content:" →";transition:.3s}
+  .card:hover .card-link::after{margin-left:6px}
+
+  /* SKILLS */
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .skill{padding:24px;border:1px solid var(--line);border-radius:8px;
+    background:var(--bg-soft);transition:.3s}
+  .skill:hover{border-color:var(--accent)}
+  .skill h3{font-size:1.05rem;margin-bottom:8px;font-family:'Be Vietnam Pro';font-weight:500}
+  .skill p{color:var(--muted);font-size:.85rem}
+
+  /* EXPERIENCE */
+  .timeline{position:relative;padding-left:30px}
+  .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;
+    width:1px;background:var(--line)}
+  .exp{position:relative;padding-bottom:48px}
+  .exp::before{content:"";position:absolute;left:-30px;top:6px;width:13px;height:13px;
+    border-radius:50%;background:var(--accent)}
+  .exp .yr{font-size:.78rem;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}
+  .exp h3{font-size:1.35rem;margin:8px 0 4px}
+  .exp .role{color:var(--text);font-size:.95rem;margin-bottom:10px}
+  .exp p{color:var(--muted);font-size:.9rem;max-width:560px}
+
+  /* CONTACT */
+  .contact{text-align:center}
+  .contact h2{font-size:clamp(2.2rem,6vw,4rem);margin-bottom:24px}
+  .contact h2 em{font-style:italic;color:var(--accent)}
+  .contact p{color:var(--muted);max-width:480px;margin:0 auto 36px}
+  .socials{display:flex;gap:28px;justify-content:center;margin-top:40px;flex-wrap:wrap}
+  .socials a{color:var(--muted);font-size:.9rem;letter-spacing:.05em;transition:.25s}
+  .socials a:hover{color:var(--accent)}
+  footer{padding:40px 0;text-align:center;color:var(--muted);font-size:.8rem;
+    border-top:1px solid var(--line)}
+
+  /* FADE-IN ON SCROLL */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* RESPONSIVE */
+  @media(max-width:820px){
+    .about-grid{grid-template-columns:1fr;gap:36px}
+    .proj-grid{grid-template-columns:1fr}
+    .skills-grid{grid-template-columns:1fr 1fr}
+    .nav-links{display:none}
+    .burger{display:block}
+    section{padding:80px 0}
+  }
+  @media(max-width:480px){.skills-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <!-- TODO: đổi tên/chữ cái logo -->
+    <a href="#hero" class="logo">A<span>.</span></a>
+    <div class="nav-links">
+      <a href="#about">Giới thiệu</a>
+      <a href="#projects">Dự án</a>
+      <a href="#skills">Kỹ năng</a>
+      <a href="#experience">Kinh nghiệm</a>
+      <a href="#contact">Liên hệ</a>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <button class="theme-btn" id="themeBtn" title="Đổi giao diện">◐</button>
+      <button class="burger" id="burger">☰</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero wrap" id="hero">
+  <div class="hero-glow"></div>
+  <p class="eyebrow reveal">Sinh viên Đại học Ngoại thương · Hồ Chí Minh</p>
+  <!-- TODO: thay tên + tagline thật -->
+  <h1 class="reveal">Nguyễn <em>An</em><br>kết nối kinh doanh.</h1>
+  <p class="tagline reveal">Mình là sinh viên Ngoại thương theo đuổi mảng Kinh doanh quốc tế & Marketing, với gần 1 năm kinh nghiệm thực tế ở vị trí thực tập sinh và cộng tác viên.</p>
+  <div class="hero-cta reveal">
+    <a href="#projects" class="btn btn-fill">Xem hoạt động & dự án</a>
+    <a href="#contact" class="btn btn-line">Liên hệ ngay</a>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap about-grid">
+    <!-- ẢNH: ảnh chân dung dọc, tỉ lệ ~4:5 (vd 800x1000px). Thay <div> bằng <img src="..."> -->
+    <div class="about-img reveal">[ẢNH chân dung 4:5 — thay bằng ảnh của bạn]</div>
+    <div class="about-text reveal">
+      <p class="eyebrow">Giới thiệu</p>
+      <h2>Học nhanh, làm thật, luôn tò mò với thị trường.</h2>
+      <!-- TODO: viết lại đoạn giới thiệu thật -->
+      <p>Mình là sinh viên năm cuối ngành Kinh doanh quốc tế tại Đại học Ngoại thương. Trong gần một năm qua, mình đã thực tập và làm cộng tác viên ở mảng marketing và phát triển kinh doanh, học cách biến ý tưởng thành kết quả đo lường được.</p>
+      <p>Mình mạnh ở khả năng phân tích, làm việc nhóm và giao tiếp đa văn hóa. Mục tiêu của mình là phát triển sự nghiệp trong lĩnh vực marketing / xuất nhập khẩu, nơi mình có thể kết hợp tư duy số liệu với sự nhạy bén thị trường.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Hoạt động & dự án</p>
+      <h2>Những việc mình đã bắt tay làm.</h2>
+    </div>
+    <div class="proj-grid">
+      <!-- 4 mục — mỗi cái: TODO tiêu đề/mô tả/link, ẢNH 16:10 (vd 1200x750px) -->
+      <article class="card reveal">
+        <div class="card-img">[ẢNH dự án 16:10]</div>
+        <div class="card-body">
+          <h3>TODO: Chiến dịch Marketing</h3>
+          <p>Thực tập sinh Marketing — lên kế hoạch nội dung và chạy chiến dịch trên mạng xã hội, góp phần tăng tương tác. Ghi rõ số liệu cụ thể của bạn ở đây.</p>
+          <a href="#" class="card-link">Xem chi tiết</a> <!-- LINK -->
+        </div>
+      </article>
+      <article class="card reveal">
+        <div class="card-img">[ẢNH dự án 16:10]</div>
+        <div class="card-body">
+          <h3>TODO: Nghiên cứu thị trường</h3>
+          <p>Phân tích thị trường và đối thủ cho một sản phẩm, tổng hợp insight thành báo cáo đề xuất chiến lược. Mô tả vai trò và kết quả của bạn.</p>
+          <a href="#" class="card-link">Xem chi tiết</a>
+        </div>
+      </article>
+      <article class="card reveal">
+        <div class="card-img">[ẢNH dự án 16:10]</div>
+        <div class="card-body">
+          <h3>TODO: Cuộc thi học thuật</h3>
+          <p>Tham gia cuộc thi giải case business (vd: vào vòng chung kết / top 10). Nêu vai trò trong nhóm và giải pháp bạn đề xuất.</p>
+          <a href="#" class="card-link">Xem chi tiết</a>
+        </div>
+      </article>
+      <article class="card reveal">
+        <div class="card-img">[ẢNH dự án 16:10]</div>
+        <div class="card-body">
+          <h3>TODO: Hoạt động CLB / sự kiện</h3>
+          <p>Thành viên ban tổ chức một sự kiện / câu lạc bộ ở trường, phụ trách mảng đối ngoại hoặc truyền thông. Nêu quy mô và đóng góp của bạn.</p>
+          <a href="#" class="card-link">Xem chi tiết</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Kỹ năng</p>
+      <h2>Công cụ & thế mạnh.</h2>
+    </div>
+    <div class="skills-grid">
+      <!-- TODO: sửa danh sách kỹ năng -->
+      <div class="skill reveal"><h3>Digital Marketing</h3><p>Content, social media, SEO cơ bản</p></div>
+      <div class="skill reveal"><h3>Phân tích dữ liệu</h3><p>Excel, Google Sheets, làm báo cáo</p></div>
+      <div class="skill reveal"><h3>Nghiên cứu thị trường</h3><p>Phân tích đối thủ, khảo sát, insight</p></div>
+      <div class="skill reveal"><h3>Ngoại ngữ</h3><p>Tiếng Anh (IELTS 7.0), giao tiếp tốt</p></div>
+      <div class="skill reveal"><h3>Tin học văn phòng</h3><p>Word, PowerPoint, Canva</p></div>
+      <div class="skill reveal"><h3>Kỹ năng mềm</h3><p>Làm việc nhóm, thuyết trình, quản lý thời gian</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Hành trình</p>
+      <h2>Kinh nghiệm làm việc.</h2>
+    </div>
+    <div class="timeline">
+      <!-- TODO: sửa các mốc kinh nghiệm thật -->
+      <div class="exp reveal">
+        <span class="yr">2025 — Nay</span>
+        <h3>TODO: Tên công ty</h3>
+        <div class="role">Thực tập sinh Marketing</div>
+        <p>Hỗ trợ team triển khai chiến dịch truyền thông, lên kế hoạch nội dung và theo dõi hiệu quả. Ghi rõ thành tựu cụ thể bằng con số nếu có.</p>
+      </div>
+      <div class="exp reveal">
+        <span class="yr">2024 — 2025</span>
+        <h3>TODO: Tên công ty / Tổ chức</h3>
+        <div class="role">Cộng tác viên Kinh doanh</div>
+        <p>Làm việc với khách hàng, hỗ trợ bán hàng và chăm sóc khách hàng. Nêu kết quả hoặc bài học bạn rút ra.</p>
+      </div>
+      <div class="exp reveal">
+        <span class="yr">2022 — Nay</span>
+        <h3>Đại học Ngoại thương (FTU)</h3>
+        <div class="role">Cử nhân Kinh doanh quốc tế</div>
+        <p>GPA: TODO. Tham gia câu lạc bộ học thuật và các cuộc thi business. Nêu học bổng hoặc thành tích nổi bật nếu có.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <p class="eyebrow reveal">Liên hệ</p>
+    <h2 class="reveal">Cùng tạo điều gì đó <em>đáng nhớ</em>.</h2>
+    <p class="reveal">Mình luôn sẵn sàng cho cơ hội thực tập, việc làm hoặc hợp tác. Gửi mình một lời chào nhé.</p>
+    <!-- TODO/LINK: thay email thật -->
+    <a href="mailto:ban@email.com" class="btn btn-fill reveal">ban@email.com</a>
+    <div class="socials reveal">
+      <!-- LINK: thay link mạng xã hội thật -->
+      <a href="#">LinkedIn</a>
+      <a href="#">Facebook</a>
+      <a href="#">CV (PDF)</a>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 TODO: Tên của bạn. Thiết kế & xây dựng với sự tỉ mỉ.</footer>
+
+<script>
+  // Theme toggle (mặc định dark)
+  const tb=document.getElementById('themeBtn');
+  tb.onclick=()=>{
+    const cur=document.documentElement.getAttribute('data-theme');
+    document.documentElement.setAttribute('data-theme',cur==='light'?'':'light');
+  };
+  // Fade-in on scroll
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay=(i%4*0.08)+'s';io.observe(el);
+  });
+  // Mobile burger -> scroll tới section (đơn giản, không cần menu phụ)
+  document.getElementById('burger').onclick=()=>{
+    document.getElementById('about').scrollIntoView();
+  };
+</script>
+</body>
+</html>
