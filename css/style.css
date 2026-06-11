@@ -97,6 +97,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);
 .about-text h2{font-size:clamp(2rem,4vw,2.9rem);margin-bottom:24px}
 .about-text p{color:var(--muted);margin-bottom:18px;max-width:520px}
 
+/* skill & tool chips */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;max-width:520px}
+.chip{font-size:.78rem;font-weight:500;letter-spacing:.03em;color:var(--text);
+  border:2px solid var(--line);padding:6px 14px;border-radius:50px;transition:.25s}
+.chip:hover{border-color:var(--accent);color:var(--accent);transform:rotate(-2deg)}
+
 /* EDUCATION */
 .edu-block{background:var(--card);border:3px solid var(--text);border-radius:18px;
   padding:38px;margin-bottom:24px;box-shadow:8px 8px 0 var(--accent);
@@ -109,7 +115,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);
 .edu-block ul li{margin-bottom:6px}
 
 /* EXPERIENCE — wheel-picker selection (game style) */
-#experience{padding:0;height:240vh}
+#experience{padding:0;height:340vh} /* 6 entries — keep ~55vh of scroll per step */
 .exp-sticky{position:sticky;top:0;min-height:100vh;display:flex;
   flex-direction:column;justify-content:center;overflow:hidden}
 .exp-sticky .sec-head{margin-bottom:36px}
