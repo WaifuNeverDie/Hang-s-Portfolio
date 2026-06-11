@@ -89,34 +89,47 @@
   .edu-block ul{color:var(--muted);font-size:.9rem;padding-left:18px}
   .edu-block ul li{margin-bottom:6px}
 
-  /* EXPERIENCE — game-menu style timeline */
-  .timeline{position:relative;padding-left:42px}
-  /* faint full track */
-  .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;
-    width:2px;background:var(--line)}
-  /* glowing progress line that draws as you scroll */
-  .timeline-progress{position:absolute;left:6px;top:6px;width:2px;height:0;
-    background:linear-gradient(to bottom,#FFD35B,var(--accent));
-    box-shadow:0 0 12px var(--accent);transition:height .15s linear}
-  .exp{position:relative;padding:18px 22px 30px;margin-bottom:18px;border-radius:10px;
-    border:1px solid transparent;
-    opacity:.35;transform:translateX(0) scale(.985);
-    transition:opacity .45s ease,transform .45s ease,border-color .45s ease,background .45s ease}
-  .exp::before{content:"";position:absolute;left:-42px;top:24px;width:13px;height:13px;
-    border-radius:50%;background:var(--bg-soft);border:2px solid var(--line);
-    transition:.45s}
-  /* selection cursor — like a game menu pointer */
-  .exp::after{content:"▸";position:absolute;left:-2px;top:18px;color:var(--accent);
-    font-size:1.1rem;opacity:0;transform:translateX(-10px);transition:.45s}
-  .exp.active{opacity:1;transform:translateX(10px) scale(1);
-    background:var(--card);border-color:color-mix(in srgb,var(--accent) 45%,transparent);
-    box-shadow:0 8px 32px rgba(0,0,0,.25)}
-  .exp.active::before{background:var(--accent);border-color:#FFD35B;
-    box-shadow:0 0 14px var(--accent)}
-  .exp.active::after{opacity:1;transform:translateX(0)}
-  /* entries already passed stay readable but calm */
-  .exp.passed{opacity:.7}
-  .exp.passed::before{background:var(--accent);border-color:transparent}
+  /* EXPERIENCE — wheel-picker selection (game style)
+     The section pins to the screen; scrolling rotates the entries through
+     a vertical wheel. Selected entry lights up in the middle, neighbours
+     shrink and fade above/below it. */
+  #experience{padding:0;height:240vh} /* scroll distance = animation length */
+  .exp-sticky{position:sticky;top:0;min-height:100vh;display:flex;
+    flex-direction:column;justify-content:center;overflow:hidden}
+  .exp-sticky .sec-head{margin-bottom:36px}
+  .wheel{position:relative;height:440px}
+  .exp{position:absolute;left:64px;right:0;top:50%;padding:24px 28px;
+    border-radius:12px;background:var(--card);border:1px solid var(--line);
+    transform:translateY(-50%);opacity:0;visibility:hidden;
+    will-change:transform,opacity;
+    transition:border-color .35s ease,box-shadow .35s ease}
+  .exp.lit{border-color:color-mix(in srgb,var(--accent) 55%,transparent);
+    box-shadow:0 0 30px color-mix(in srgb,var(--accent) 25%,transparent)}
+  /* circle selection bar on the left */
+  .wheel-dots{position:absolute;left:14px;top:50%;transform:translateY(-50%);
+    display:flex;flex-direction:column;gap:16px;z-index:200}
+  .wheel-dots .dot{width:10px;height:10px;border-radius:50%;
+    background:var(--line);transition:.35s}
+  .wheel-dots .dot.on{background:var(--accent);transform:scale(1.55);
+    box-shadow:0 0 12px var(--accent)}
+  /* hover preview — small picture window on the selected entry */
+  .exp-preview{position:absolute;right:24px;bottom:calc(100% - 8px);z-index:300;
+    display:flex;gap:10px;padding:12px;border-radius:10px;
+    background:var(--bg-soft);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+    box-shadow:0 14px 40px rgba(0,0,0,.35);
+    opacity:0;visibility:hidden;transform:translateY(10px) scale(.96);
+    transition:opacity .3s ease,transform .3s ease,visibility .3s;pointer-events:none}
+  .exp-preview::after{content:"";position:absolute;bottom:-7px;right:40px;
+    width:12px;height:12px;background:var(--bg-soft);transform:rotate(45deg);
+    border-right:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+    border-bottom:1px solid color-mix(in srgb,var(--accent) 45%,transparent)}
+  .exp-preview .pv{width:130px;height:86px;border-radius:6px;overflow:hidden;
+    background:var(--card);border:1px solid var(--line);display:flex;
+    align-items:center;justify-content:center;color:var(--muted);
+    font-size:.68rem;text-align:center;padding:6px}
+  .exp-preview .pv img{width:100%;height:100%;object-fit:cover}
+  /* only the lit (selected) entry shows its preview on hover */
+  .exp.lit:hover .exp-preview{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
   .exp .yr{font-size:.78rem;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}
   .exp h3{font-size:1.35rem;margin:8px 0 4px}
   .exp .role{color:var(--text);font-size:.95rem;margin-bottom:10px}
@@ -124,7 +137,7 @@
   .exp ul{color:var(--muted);font-size:.9rem;padding-left:18px;max-width:560px}
   .exp ul li{margin-bottom:6px}
   @media (prefers-reduced-motion: reduce){
-    .exp,.exp::before,.exp::after,.timeline-progress{transition:none}
+    .exp,.wheel-dots .dot{transition:none}
   }
 
   /* OTHERS — card grid reused */
@@ -249,19 +262,25 @@
 
 <!-- EXPERIENCE -->
 <section id="experience">
-  <div class="wrap">
+  <div class="exp-sticky wrap">
     <div class="sec-head reveal">
       <p class="eyebrow">Experience</p>
       <h2>Brands I've worked with.</h2>
     </div>
-    <div class="timeline" id="timeline">
-      <div class="timeline-progress" id="timelineProgress"></div>
+    <div class="wheel" id="wheel">
+      <div class="wheel-dots" id="wheelDots"></div>
 
-      <div class="exp reveal">
+      <div class="exp">
         <!-- TODO: fill in exact dates, role title, and bullet points for this role -->
         <span class="yr">TODO: Month Year — Month Year</span>
         <h3>Hung Hoa Beer &amp; Cinema</h3>
         <div class="role">TODO: Role title — e.g. Content Marketing Executive</div>
+        <!-- ẢNH: hover preview — replace placeholders with <img src="..."> (~390×260px each) -->
+        <div class="exp-preview">
+          <div class="pv">TODO: ảnh 1<br>Hung Hoa</div>
+          <div class="pv">TODO: ảnh 2<br>Hung Hoa</div>
+          <div class="pv">TODO: ảnh 3<br>Hung Hoa</div>
+        </div>
         <ul>
           <li>TODO: Describe your main responsibility here (e.g. "Managed Facebook and TikTok content calendar, publishing X posts/week").</li>
           <li>TODO: Add a result with numbers if possible (e.g. "Grew page followers by X% in Y months").</li>
@@ -269,33 +288,51 @@
         </ul>
       </div>
 
-      <div class="exp reveal">
+      <div class="exp">
         <!-- TODO: fill in exact dates, role title, and bullet points for this role -->
         <span class="yr">TODO: Month Year — Month Year</span>
         <h3>Digimind Group</h3>
         <div class="role">TODO: Role title — e.g. Social Media Intern</div>
+        <!-- ẢNH: hover preview — replace placeholders with <img src="..."> (~390×260px each) -->
+        <div class="exp-preview">
+          <div class="pv">TODO: ảnh 1<br>Digimind</div>
+          <div class="pv">TODO: ảnh 2<br>Digimind</div>
+          <div class="pv">TODO: ảnh 3<br>Digimind</div>
+        </div>
         <ul>
           <li>TODO: Describe your main responsibility here.</li>
           <li>TODO: Add a result with numbers if possible.</li>
         </ul>
       </div>
 
-      <div class="exp reveal">
+      <div class="exp">
         <!-- TODO: fill in exact dates, role title, and bullet points for this role -->
         <span class="yr">TODO: Month Year — Month Year</span>
         <h3>Carlsberg Vietnam</h3>
         <div class="role">TODO: Role title — e.g. Marketing Intern</div>
+        <!-- ẢNH: hover preview — replace placeholders with <img src="..."> (~390×260px each) -->
+        <div class="exp-preview">
+          <div class="pv">TODO: ảnh 1<br>Carlsberg</div>
+          <div class="pv">TODO: ảnh 2<br>Carlsberg</div>
+          <div class="pv">TODO: ảnh 3<br>Carlsberg</div>
+        </div>
         <ul>
           <li>TODO: Describe your main responsibility here.</li>
           <li>TODO: Add a result with numbers if possible.</li>
         </ul>
       </div>
 
-      <div class="exp reveal">
+      <div class="exp">
         <!-- TODO: fill in exact dates, role title, and bullet points for this role -->
         <span class="yr">TODO: Month Year — Month Year</span>
         <h3>SG Beer Central JSC</h3>
         <div class="role">TODO: Role title — e.g. Content Contributor</div>
+        <!-- ẢNH: hover preview — replace placeholders with <img src="..."> (~390×260px each) -->
+        <div class="exp-preview">
+          <div class="pv">TODO: ảnh 1<br>SG Beer</div>
+          <div class="pv">TODO: ảnh 2<br>SG Beer</div>
+          <div class="pv">TODO: ảnh 3<br>SG Beer</div>
+        </div>
         <ul>
           <li>TODO: Describe your main responsibility here.</li>
           <li>TODO: Add a result with numbers if possible.</li>
@@ -399,43 +436,55 @@
     document.getElementById('about').scrollIntoView();
   };
 
-  // EXPERIENCE — game-menu timeline:
-  // the glowing line draws as you scroll, and the entry closest to the
-  // middle of the screen becomes the "selected" item (works both directions)
-  const tl=document.getElementById('timeline');
-  const progress=document.getElementById('timelineProgress');
-  const exps=[...tl.querySelectorAll('.exp')];
-  // these have their own scroll animation — opt out of the generic fade-in
-  exps.forEach(el=>el.classList.remove('reveal'));
-  function updateTimeline(){
-    const rect=tl.getBoundingClientRect();
-    const focusY=window.innerHeight*0.45; // selection point on screen
+  // EXPERIENCE — wheel picker:
+  // the section pins while you scroll through it; entries rotate through a
+  // vertical wheel. The selected one sits lit in the middle at full size,
+  // the previous shifts up + shrinks + fades, the next waits below.
+  // At the start/end you see 2 entries, in the middle 3 — automatically,
+  // since only neighbours within 1 step of the selection are visible.
+  const expSection=document.getElementById('experience');
+  const exps=[...document.querySelectorAll('#wheel .exp')];
+  const dotsBox=document.getElementById('wheelDots');
+  exps.forEach(()=>{
+    const d=document.createElement('div');d.className='dot';dotsBox.appendChild(d);
+  });
+  const dots=[...dotsBox.children];
+  const STEP=165;        // px between wheel positions
+  const FADE=0.6;        // opacity lost per step away from selection
+  const SHRINK=0.14;     // scale lost per step away from selection
+  const EASE=0.09;       // smoothing — lower = floatier, higher = snappier
 
-    // draw the progress line up to the focus point
-    const drawn=Math.min(Math.max(focusY-rect.top,0),rect.height-12);
-    progress.style.height=drawn+'px';
-
-    // pick the entry whose center is nearest the focus point
-    let best=null,bestDist=Infinity;
-    exps.forEach(el=>{
-      const r=el.getBoundingClientRect();
-      const center=r.top+r.height/2;
-      const dist=Math.abs(center-focusY);
-      if(dist<bestDist){bestDist=dist;best=el}
-    });
-    exps.forEach(el=>{
-      el.classList.remove('active','passed');
-      const r=el.getBoundingClientRect();
-      if(el===best && r.top<window.innerHeight && r.bottom>0){
-        el.classList.add('active');
-      }else if(r.top+r.height/2<focusY){
-        el.classList.add('passed');
-      }
-    });
+  // scroll picks a TARGET entry (snapped to whole steps); the wheel then
+  // glides toward it with easing, so a small scroll = one clean step
+  let wheelPos=0;
+  function targetIndex(){
+    const r=expSection.getBoundingClientRect();
+    const scrollable=r.height-window.innerHeight;
+    const p=Math.min(Math.max(-r.top/scrollable,0),1); // 0..1 through section
+    return Math.round(p*(exps.length-1));               // snap to nearest entry
   }
-  window.addEventListener('scroll',updateTimeline,{passive:true});
-  window.addEventListener('resize',updateTimeline);
-  updateTimeline();
+  function renderWheel(pos){
+    exps.forEach((el,i)=>{
+      const d=i-pos, ad=Math.abs(d);
+      const visible=ad<1.5;
+      el.style.visibility=visible?'visible':'hidden';
+      el.style.opacity=visible?String(Math.max(0,1-FADE*ad)):'0';
+      el.style.transform=
+        `translateY(calc(-50% + ${(d*STEP).toFixed(1)}px)) scale(${(1-SHRINK*Math.min(ad,2)).toFixed(3)})`;
+      el.style.zIndex=String(100-Math.round(ad*10));
+      el.classList.toggle('lit',ad<0.5);
+    });
+    const sel=Math.round(pos);
+    dots.forEach((dt,i)=>dt.classList.toggle('on',i===sel));
+  }
+  function tickWheel(){
+    const t=targetIndex();
+    wheelPos+=(t-wheelPos)*EASE;            // ease toward the target
+    if(Math.abs(t-wheelPos)<0.001)wheelPos=t;
+    renderWheel(wheelPos);
+    requestAnimationFrame(tickWheel);
+  }
+  requestAnimationFrame(tickWheel);
 </script>
 </body>
 </html>
