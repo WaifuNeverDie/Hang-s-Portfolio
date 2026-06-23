@@ -201,7 +201,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);
 /* OTHERS — card grid */
 .sec-head{margin-bottom:60px}
 .sec-head h2{font-size:clamp(2.1rem,4.5vw,3.2rem)}
-.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px}
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px;padding-top:48px} /* headroom for the blog fan to open without hitting the heading */
 .card{background:var(--card);border:3px solid var(--text);border-radius:18px;
   overflow:hidden;transition:.3s;cursor:pointer}
 .proj-grid .card:nth-child(odd){transform:rotate(-1deg)}
@@ -220,12 +220,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);
   transform:rotate(0);
   transition:transform .5s cubic-bezier(.2,.85,.25,1),border-radius .4s,border-width .4s,box-shadow .4s}
 /* DOM order is profile, latest, cover — cover (last) on top at rest = a normal 16:10 cover */
-/* on hover the fan spills out of the card and draws above its neighbours */
+/* on hover the fan spills sideways/above the cover, but stays behind the body text */
 .card-deck:hover{overflow:visible;z-index:20}
 .card-deck:hover .card-fan{overflow:visible}
-.card:hover .card-fan .fan-card{border-radius:10px;border-width:3px;box-shadow:0 16px 34px rgba(0,0,0,.5)}
-.card:hover .card-fan .fan-card:nth-child(1){transform:rotate(-22deg)}  /* fans left  */
-.card:hover .card-fan .fan-card:nth-child(2){transform:rotate(22deg)}   /* fans right */
+/* keep the blog title + text above the fan so a spilling card never covers them */
+.card-deck .card-body{position:relative;z-index:2;background:var(--card)}
+.card:hover .card-fan .fan-card{border-radius:10px;border-width:3px;box-shadow:0 14px 30px rgba(0,0,0,.5)}
+.card:hover .card-fan .fan-card:nth-child(1){transform:rotate(-12deg)}  /* fans left  */
+.card:hover .card-fan .fan-card:nth-child(2){transform:rotate(12deg)}   /* fans right */
 .card:hover .card-fan .fan-card:nth-child(3){transform:rotate(0)}       /* cover stays centred */
 @media (prefers-reduced-motion: reduce){ .card-fan .fan-card{transition:none} }
 .card-body{padding:26px}
