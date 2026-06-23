@@ -72,3 +72,97 @@ function tickWheel() {
   requestAnimationFrame(tickWheel);
 }
 requestAnimationFrame(tickWheel);
+
+// EXPERIENCE — preview galleries + full-size lightbox
+// Each .exp-preview[data-images] gets a sliding thumbnail strip (3 visible,
+// arrows appear when there are more than 3). Clicking a thumb opens the
+// shared lightbox, which can page through that entry's whole image set.
+const THUMB = 180, GAP = 12, VISIBLE = 3;
+
+// --- lightbox (shared) ---
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbPrev = document.getElementById('lbPrev');
+const lbNext = document.getElementById('lbNext');
+const lbClose = document.getElementById('lbClose');
+const lbCounter = document.getElementById('lbCounter');
+let lbSet = [], lbIndex = 0;
+
+function showLightbox(images, index) {
+  lbSet = images; lbIndex = index;
+  renderLightbox();
+  lb.classList.add('open');
+  lb.setAttribute('aria-hidden', 'false');
+}
+function renderLightbox() {
+  lbImg.src = lbSet[lbIndex];
+  const multi = lbSet.length > 1;
+  lbPrev.style.display = multi ? 'flex' : 'none';
+  lbNext.style.display = multi ? 'flex' : 'none';
+  lbCounter.style.display = multi ? 'block' : 'none';
+  lbCounter.textContent = `${lbIndex + 1} / ${lbSet.length}`;
+}
+function closeLightbox() {
+  lb.classList.remove('open');
+  lb.setAttribute('aria-hidden', 'true');
+  lbImg.src = '';
+}
+function stepLightbox(dir) {
+  lbIndex = (lbIndex + dir + lbSet.length) % lbSet.length;
+  renderLightbox();
+}
+lbPrev.onclick = () => stepLightbox(-1);
+lbNext.onclick = () => stepLightbox(1);
+lbClose.onclick = closeLightbox;
+lb.onclick = (e) => { if (e.target === lb) closeLightbox(); }; // click backdrop to close
+document.addEventListener('keydown', (e) => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  else if (e.key === 'ArrowLeft') stepLightbox(-1);
+  else if (e.key === 'ArrowRight') stepLightbox(1);
+});
+
+// --- build each entry's thumbnail gallery ---
+document.querySelectorAll('.exp-preview[data-images]').forEach((box) => {
+  const images = box.dataset.images.split(',').map(s => s.trim()).filter(Boolean);
+  if (!images.length) return;
+
+  const viewport = document.createElement('div');
+  viewport.className = 'pv-viewport';
+  const track = document.createElement('div');
+  track.className = 'pv-track';
+  viewport.appendChild(track);
+
+  images.forEach((src, i) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'pv';
+    const img = document.createElement('img');
+    img.src = src; img.alt = ''; img.loading = 'lazy';
+    thumb.appendChild(img);
+    thumb.onclick = () => showLightbox(images, i);
+    track.appendChild(thumb);
+  });
+
+  const needArrows = images.length > VISIBLE;
+  if (needArrows) {
+    let page = 0;
+    const maxPage = images.length - VISIBLE; // slide one thumb at a time
+    const prev = document.createElement('button');
+    prev.className = 'pv-arrow'; prev.textContent = '‹';
+    const next = document.createElement('button');
+    next.className = 'pv-arrow'; next.textContent = '›';
+    const update = () => {
+      track.style.transform = `translateX(-${page * (THUMB + GAP)}px)`;
+      prev.disabled = page === 0;
+      next.disabled = page === maxPage;
+    };
+    prev.onclick = () => { if (page > 0) { page--; update(); } };
+    next.onclick = () => { if (page < maxPage) { page++; update(); } };
+    box.append(prev, viewport, next);
+    update();
+  } else {
+    // fewer than 3 — shrink the viewport so the popup hugs the images
+    viewport.style.width = (images.length * THUMB + (images.length - 1) * GAP) + 'px';
+    box.appendChild(viewport);
+  }
+});
