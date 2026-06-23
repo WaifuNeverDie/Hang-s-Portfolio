@@ -122,6 +122,14 @@ document.addEventListener('keydown', (e) => {
   else if (e.key === 'ArrowRight') stepLightbox(1);
 });
 
+// --- card covers that open the lightbox directly (e.g. blog) ---
+document.querySelectorAll('.gallery-trigger[data-images]').forEach((el) => {
+  const images = el.dataset.images.split(',').map(s => s.trim()).filter(Boolean);
+  if (!images.length) return;
+  el.style.cursor = 'pointer';
+  el.onclick = () => showLightbox(images, 0);
+});
+
 // --- build each entry's thumbnail gallery ---
 document.querySelectorAll('.exp-preview[data-images]').forEach((box) => {
   const images = box.dataset.images.split(',').map(s => s.trim()).filter(Boolean);
