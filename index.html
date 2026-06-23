@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=20260623c">
 </head>
 <body>
 
@@ -210,9 +210,11 @@
     <div class="proj-grid">
 
       <article class="card reveal">
-        <div class="card-img gallery-trigger" title="Click to view photos"
+        <div class="card-img card-fan gallery-trigger" title="Hover to spread · click to view"
              data-images="images/components/ngondoihoa-cover.jpg,images/components/ngondoihoa.jpg,images/components/ngondoihoa-latest.jpg">
-          <img src="images/components/ngondoihoa-cover.jpg" alt="Ngộn Đồi Hoa blog">
+          <img class="fan-card" src="images/components/ngondoihoa.jpg" alt="">
+          <img class="fan-card" src="images/components/ngondoihoa-cover.jpg" alt="Ngộn Đồi Hoa blog">
+          <img class="fan-card" src="images/components/ngondoihoa-latest.jpg" alt="">
         </div>
         <div class="card-body">
           <h3>Blog Ngộn Đồi Hoa</h3>
@@ -263,8 +265,12 @@
   <img id="lbImg" src="" alt="Project image full size">
   <button class="lb-btn lb-next" id="lbNext" aria-label="Next">›</button>
   <div class="lb-counter" id="lbCounter"></div>
+  <div class="lb-zoom">
+    <button class="lb-btn" id="lbZoomOut" aria-label="Zoom out">−</button>
+    <button class="lb-btn" id="lbZoomIn" aria-label="Zoom in">+</button>
+  </div>
 </div>
 
-<script src="js/main.js"></script>
+<script src="js/main.js?v=20260623c"></script>
 </body>
 </html>
