@@ -209,18 +209,22 @@
     </div>
     <div class="proj-grid">
 
-      <article class="card card-deck reveal">
-        <div class="card-img card-fan gallery-trigger" title="Hover to spread · click to view"
-             data-images="images/components/ngondoihoa-cover.jpg,images/components/ngondoihoa.jpg,images/components/ngondoihoa-latest.jpg">
-          <img class="fan-card" src="images/components/ngondoihoa.jpg" alt="">
-          <img class="fan-card" src="images/components/ngondoihoa-latest.jpg" alt="">
-          <img class="fan-card" src="images/components/ngondoihoa-cover.jpg" alt="Ngộn Đồi Hoa blog">
-        </div>
-        <div class="card-body">
-          <h3>Blog Ngộn Đồi Hoa</h3>
-          <p><em>"Nơi lời thì thầm của một trái tim biết yêu, biết mộng mơ được cất lên!"</em></p>
-          <p>A personal blog and a space to share reflections on life and art. 799 followers on Facebook. Featured post: an honest essay on overcoming peer pressure at FTU — from top student in high school to feeling like "nobody" at university, and rebuilding confidence through consistent effort and self-belief.</p>
-          <a href="https://www.facebook.com/hoathamtrennentroixanh" target="_blank" rel="noopener" class="card-link">Visit blog</a>
+      <article class="card-deck reveal">
+        <!-- two full cards fanning behind the front one (the deck) -->
+        <span class="deck-back deck-back-a" style="background-image:url(images/components/ngondoihoa.jpg)" aria-hidden="true"></span>
+        <span class="deck-back deck-back-b" style="background-image:url(images/components/ngondoihoa-latest.jpg)" aria-hidden="true"></span>
+        <!-- the front card: cover image + description -->
+        <div class="card deck-front">
+          <div class="card-img gallery-trigger" title="Click to view photos"
+               data-images="images/components/ngondoihoa-cover.jpg,images/components/ngondoihoa.jpg,images/components/ngondoihoa-latest.jpg">
+            <img src="images/components/ngondoihoa-cover.jpg" alt="Ngộn Đồi Hoa blog">
+          </div>
+          <div class="card-body">
+            <h3>Blog Ngộn Đồi Hoa</h3>
+            <p><em>"Nơi lời thì thầm của một trái tim biết yêu, biết mộng mơ được cất lên!"</em></p>
+            <p>A personal blog and a space to share reflections on life and art. 799 followers on Facebook. Featured post: an honest essay on overcoming peer pressure at FTU — from top student in high school to feeling like "nobody" at university, and rebuilding confidence through consistent effort and self-belief.</p>
+            <a href="https://www.facebook.com/hoathamtrennentroixanh" target="_blank" rel="noopener" class="card-link">Visit blog</a>
+          </div>
         </div>
       </article>
 

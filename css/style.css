@@ -201,7 +201,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);
 /* OTHERS — card grid */
 .sec-head{margin-bottom:60px}
 .sec-head h2{font-size:clamp(2.1rem,4.5vw,3.2rem)}
-.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px;padding-top:48px} /* headroom for the blog fan to open without hitting the heading */
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px;padding-top:20px} /* small headroom for the deck to peek above the cards */
 .card{background:var(--card);border:3px solid var(--text);border-radius:18px;
   overflow:hidden;transition:.3s;cursor:pointer}
 .proj-grid .card:nth-child(odd){transform:rotate(-1deg)}
@@ -212,24 +212,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);
   text-align:center;padding:16px;overflow:hidden;border-bottom:3px solid var(--text)}
 .card-img img{width:100%;height:100%;object-fit:cover;transition:.5s}
 .card:hover .card-img img{transform:scale(1.05)}
-/* blog card — normal 16:10 cover at rest; photos fan from the bottom (like a held hand) on hover */
-.card-fan{position:relative;background:var(--bg-soft);overflow:hidden}
-.card-fan .fan-card{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  transform-origin:bottom center;            /* pivot from the bottom so tops splay, bottoms stay */
-  border-radius:0;border:0 solid var(--text);box-shadow:0 0 0 rgba(0,0,0,0);
-  transform:rotate(0);
-  transition:transform .5s cubic-bezier(.2,.85,.25,1),border-radius .4s,border-width .4s,box-shadow .4s}
-/* DOM order is profile, latest, cover — cover (last) on top at rest = a normal 16:10 cover */
-/* on hover the fan spills sideways/above the cover, but stays behind the body text */
-.card-deck:hover{overflow:visible;z-index:20}
-.card-deck:hover .card-fan{overflow:visible}
-/* keep the blog title + text above the fan so a spilling card never covers them */
-.card-deck .card-body{position:relative;z-index:2;background:var(--card)}
-.card:hover .card-fan .fan-card{border-radius:10px;border-width:3px;box-shadow:0 14px 30px rgba(0,0,0,.5)}
-.card:hover .card-fan .fan-card:nth-child(1){transform:rotate(-12deg)}  /* fans left  */
-.card:hover .card-fan .fan-card:nth-child(2){transform:rotate(12deg)}   /* fans right */
-.card:hover .card-fan .fan-card:nth-child(3){transform:rotate(0)}       /* cover stays centred */
-@media (prefers-reduced-motion: reduce){ .card-fan .fan-card{transition:none} }
+/* blog card — the whole card (cover + text) is a "card"; two more fan out behind it like a deck */
+.card-deck{position:relative}
+.deck-front{position:relative;z-index:3}              /* the real front card, opaque, on top */
+.deck-back{position:absolute;inset:0;z-index:1;border-radius:18px;border:3px solid var(--text);
+  background-size:cover;background-position:center;background-color:var(--card);
+  transform-origin:bottom center;transform:rotate(0);   /* pivot from the deck's bottom */
+  box-shadow:0 10px 24px rgba(0,0,0,.3);pointer-events:none;
+  transition:transform .5s cubic-bezier(.2,.85,.25,1),box-shadow .4s}
+/* on hover the back cards fan out from behind, and the whole deck lifts above its neighbour */
+.card-deck:hover{z-index:20}
+.card-deck:hover .deck-back{box-shadow:0 18px 36px rgba(0,0,0,.45)}
+.card-deck:hover .deck-back-a{transform:rotate(-6deg)}   /* fans left  */
+.card-deck:hover .deck-back-b{transform:rotate(6deg)}    /* fans right */
+@media (prefers-reduced-motion: reduce){ .deck-back{transition:none} }
 .card-body{padding:26px}
 .card-body h3{font-size:1.4rem;margin-bottom:10px}
 .card-body p{color:var(--muted);font-size:.92rem;margin-bottom:18px}
